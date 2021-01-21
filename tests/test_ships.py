@@ -1,6 +1,6 @@
 import pytest
 
-from src.app import get_ship, get_weapon, get_engine, get_hull
+from src.misc import get_ship, get_weapon, get_engine, get_hull
 from src.db_app.model import Weapon, Engine_, Hull
 from src.params import MAX_ITEMS
 

@@ -1,15 +1,10 @@
-import argparse
-import logging
-import sys
 import random
-from pathlib import Path
-from sqlalchemy.exc import IntegrityError
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm.session import sessionmaker, Session
 
-from src.db_app.model import Base, Ship, Weapon, Hull, Engine_
+from src.db_app.model import Ship, Weapon, Hull, Engine_
 from src.params import MAX_ITEMS, PARAMS_GEN
 
 
@@ -85,22 +80,3 @@ class DbFiller:
         self._create_weapons()
         self._create_hulls()
         self._create_ships()
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Fill empty database.")
-    parser.add_argument("-p", "--path", type=str, default="test.db", help="path for db")
-    parser.add_argument(
-        "-e", "--existed", type=bool, default=False, help="should db be existed"
-    )
-    params = parser.parse_args(sys.argv[1:])
-
-    filler = DbFiller(f"/{params.path}")
-    if params.existed and not Path(params.path).exists():
-        raise FileNotFoundError("Database `{params.path}` does not exist")
-    elif not Path(params.path).exists():
-        Base.metadata.create_all(filler.engine)
-    try:
-        filler.fill_db()
-    except IntegrityError:
-        logging.warning(f"Database `{params.path}` exists and filled")

@@ -3,7 +3,7 @@ import logging
 
 from sqlalchemy import create_engine
 
-from .model import Base
+from src.db_app.model import Base
 
 
 LOG_FORMAT = logging.Formatter(fmt="{asctime}:{levelname}:{name}: {message}", style="{")
@@ -20,7 +20,7 @@ class DbCreator:
         self.logger.setLevel(logging.DEBUG)
 
     def create_db(self):
-        engine = create_engine(f"sqlite:///{self.db_path}", echo=True)
+        engine = create_engine(f"sqlite:///{self.db_path}")
         if not Path(self.db_path).exists():
             Base.metadata.create_all(engine)
         else:
