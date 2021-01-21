@@ -19,7 +19,8 @@ def main():
 
     filler = DbFiller(f"/{params.path}")
     if params.existed and not Path(params.path).exists():
-        raise FileNotFoundError("Database `{params.path}` does not exist")
+        logging.error(f"Database `{params.path}` does not exist")
+        exit(1)
     elif not Path(params.path).exists():
         Base.metadata.create_all(filler.engine)
     try:
